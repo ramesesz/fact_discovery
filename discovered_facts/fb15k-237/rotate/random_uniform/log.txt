@@ -1,0 +1,8 @@
+Evaluation time: 	2.4794516563415527
+Filtered triples: 	0
+MR: 			nan
+MRR: 			nan
+Evaluation time: 	2.356240749359131
+Filtered triples: 	0
+MR: 			nan
+MRR: 			nan

@@ -1,0 +1,1 @@
+This folder is supposed to contain the trained KGE models used to evaluate the fact candidates.

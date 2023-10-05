@@ -1,0 +1,8 @@
+Evaluation time: 	0.8703293800354004
+Filtered triples: 	0
+MR: 				7244.2
+MRR: 				0.000200171219394219
+Evaluation time: 	0.9352920055389404
+Filtered triples: 	8
+MR: 				7244.2
+MRR: 				0.000200171219394219
