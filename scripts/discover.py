@@ -56,7 +56,7 @@ for strategy in strategy_list:
     np.savetxt(f'{path_to_data}/{strategy}.del', discoveries_arr, delimiter='\t', fmt='%s')
     
     # Save extraction logs
-    log_path = f'fact_candidates/{dataset}/{strategy}'
+    log_path = f'discovery_logs/{dataset}/{strategy}'
     if not os.path.exists(log_path):
             # Create the directory if it does not exist
             os.makedirs(log_path)
