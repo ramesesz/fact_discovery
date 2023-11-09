@@ -16,9 +16,6 @@ Our experiments include 4 datasets, 5 KG embeddings, resulting in a total of 20 
 ## Fact Discovery
 We adopted the discovery algorithm from [Ampligraph](https://docs.ampligraph.org/en/1.4.0/generated/ampligraph.discovery.discover_facts.html) and introduced some minor changes to suit our LibKGE-based experimental code. The original code of Ampligraph deals with the fact candidate generation and evaluation sequentially in a single function call. In contrast, our [discover.py](scripts/discover.py) first generates fact candidates from all datasets using all of the discovery strategies. Then we run [run_eval.sh](scripts/run_eval.sh) to evaluate and filter the fact candidates.
 
-The fact candidates and discovered facts from our experiments can be found in [fact_candidates](fact_candidates/) and [discovered_facts](discovered_facts/) respectively.
-
-
 ## Reproducing Our Results
 For reproducing our experiments, we expect to a certain extent familiarity with the LibKGE framework. Our workflow consist of two main steps:
 
