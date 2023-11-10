@@ -40,6 +40,8 @@ ranks = []
 # Calculate ranks of triples
 start_evaluation = time.time()
 
+## Customizable
+## --------------------------------------------------------------------------------
 for triple in X:
     # Calculate score of triple
     s = torch.LongTensor([triple[0]])
@@ -69,6 +71,7 @@ for triple in X:
     tail_rank = tail_corruption_scores_list.index(triple_score) + 1
     rank = np.mean([head_rank, tail_rank])
     ranks.append(rank)
+## --------------------------------------------------------------------------------
 
 # Filter triples and ranks with top_n=500
 mask = np.array(ranks) <= 500

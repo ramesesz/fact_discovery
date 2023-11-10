@@ -155,6 +155,11 @@ def generate_candidates(X, strategy, target_rel, max_candidates, consolidate_sid
         e_s_weights = e_s_counts[:, 1].astype(np.float64) / np.sum(e_s_counts[:, 1].astype(np.float64))
         e_o_weights = e_o_counts[:, 1].astype(np.float64) / np.sum(e_o_counts[:, 1].astype(np.float64))
 
+    ## Customizable
+    ## --------------------------------------------------------------------------------
+    ## Add a new if clause for a new strategy.
+    ## --------------------------------------------------------------------------------
+
     elif strategy in ['graph_degree', 'cluster_coefficient', 'cluster_triangles', 'cluster_squares']:
 
         # Create networkx graph
@@ -206,7 +211,7 @@ def generate_candidates(X, strategy, target_rel, max_candidates, consolidate_sid
         if num_retries == max_retries:
             break
 
-    # end_idx will be max_candidates in most cases, but could be less
+
     return X_candidates[0:end_idx, :]
 
 

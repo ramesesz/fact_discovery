@@ -17,12 +17,15 @@ print(f'Extracting from dataset {dataset} --------------------------------------
 
 path_to_data = f'../kge/data/{dataset}'
 
-# Load data
+## Customizable
+## --------------------------------------------------------------------------------
+# Load dataset
 X = np.loadtxt(f'{path_to_data}/train.del', dtype=str)
 valid = np.loadtxt(f'{path_to_data}/valid.del', dtype=str)
 test = np.loadtxt(f'{path_to_data}/test.del', dtype=str)
 
 filter_triples = np.vstack((X, valid, test))
+## --------------------------------------------------------------------------------
 
 # Get all relations
 rel_list = np.unique(X[:, 1])

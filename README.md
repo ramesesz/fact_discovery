@@ -38,3 +38,15 @@ chmod +x run_eval.sh
 ```
 
 The script calls [eval.py](scripts/eval.py) which evaluates each triple in *name_of_strategy.del*, and filtering out those ranking below 500. This is done for all strategies in all datasets using LibKGE embedding models (pytorch checkpoints stored in [/models](/models/)). The list of discovered facts and their respective ranks are stored in [/discovered_facts](/discovered_facts/).
+
+## Customizing Our Setup
+There are three important modules that of our workflow that is easily customizable: The dataset, strategy, and embedding model. Search the repository for `Customizable` comments to locate parts of the code to customize.
+
+### Datasets
+Our fact discovery framework ([discovery.py](/scripts/discover.py)) extracts entities and relations from *.del* files, the standard format used by LibKGE that stores the triples in their index format. This format of storage serves to accelerate the triple scoring within the LibKGE framework. If this is irrelevant, you can also use the more common *.txt* datasets to extract triples and relations from.
+
+### Strategies
+A new sampling strategy can be simply added to our array of if-clauses in [utils.py](/scripts/utils.py) to allocate weights to nodes of the graph.
+
+### Evaluation
+Our framework implements evaluation ([eval.py](/scripts/eval.py)) in a for-loop and appraising each triple individually using a model saved as a pytorch checkpoint. This can be easily replaced by other 'more neat' evaluation function calls, e.g., that of Ampligraph, whose implementation only requires a single function call, and returns a list of fact candidates and their ranks.
