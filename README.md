@@ -43,10 +43,65 @@ The script calls [eval.py](scripts/eval.py) which evaluates each triple in *name
 There are three important modules that of our workflow that is easily customizable: The dataset, strategy, and embedding model. Search the repository for `Customizable` comments to locate parts of the code to customize.
 
 ### Datasets
+```python
+X = np.loadtxt(f'{path_to_data}/train.del', dtype=str)
+valid = np.loadtxt(f'{path_to_data}/valid.del', dtype=str)
+test = np.loadtxt(f'{path_to_data}/test.del', dtype=str)
+
+# Complete dataset to extract triples and relations from
+filter_triples = np.vstack((X, valid, test)) 
+```
+
 Our fact discovery framework ([discovery.py](/scripts/discover.py)) extracts entities and relations from *.del* files, the standard format used by LibKGE that stores the triples in their index format. This format of storage serves to accelerate the triple scoring within the LibKGE framework. If this is irrelevant, you can also use the more common *.txt* datasets to extract triples and relations from.
 
 ### Strategies
+```python
+...
+
+elif strategy == 'entity_frequency':
+
+    # Get entity counts and sort them in ascending order
+    if consolidate_sides:
+        e_s_counts = np.array(np.unique(X[:, [0, 2]], return_counts=True)).T
+        e_o_counts = e_s_counts
+    else:
+        e_s_counts = np.array(np.unique(X[:, 0], return_counts=True)).T
+        e_o_counts = np.array(np.unique(X[:, 2], return_counts=True)).T
+
+    e_s_weights = e_s_counts[:, 1].astype(np.float64) / np.sum(e_s_counts[:, 1].astype(np.float64))
+    e_o_weights = e_o_counts[:, 1].astype(np.float64) / np.sum(e_o_counts[:, 1].astype(np.float64))
+
+
+## --------------------------------------------------------------------------------
+## Add a new if clause for a new strategy.
+## --------------------------------------------------------------------------------
+
+...
+```
 A new sampling strategy can be simply added to our array of if-clauses in [utils.py](/scripts/utils.py) to allocate weights to nodes of the graph.
 
 ### Evaluation
+```python
+## --------------------------------------------------------------------------------
+for triple in X:
+    # Calculate score of triple
+    s = torch.LongTensor([triple[0]])
+    p = torch.LongTensor([triple[1]]) 
+    o = torch.LongTensor([triple[2]])
+
+    triple_score_s = kge_model.score_spo(s, p, o, direction="s")
+    triple_score_o = kge_model.score_spo(s, p, o, direction="o")
+    triple_score = max(triple_score_s, triple_score_o)
+    triple_score = triple_score.tolist()[0]
+
+    ...
+
+    # Calculate rank
+    head_rank = head_corruption_scores_list.index(triple_score) + 1
+    tail_rank = tail_corruption_scores_list.index(triple_score) + 1
+    rank = np.mean([head_rank, tail_rank])
+    ranks.append(rank)
+## --------------------------------------------------------------------------------
+```
+
 Our framework implements evaluation ([eval.py](/scripts/eval.py)) in a for-loop and appraising each triple individually using a model saved as a pytorch checkpoint. This can be easily replaced by other 'more neat' evaluation function calls, e.g., that of Ampligraph, whose implementation only requires a single function call, and returns a list of fact candidates and their ranks.
